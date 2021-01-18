@@ -49,12 +49,10 @@ class MyHomePage extends StatelessWidget {
             height: 60,
             child: LoadingButton(
               borderRadius: BorderRadius.all(Radius.circular(8)),
-              gradient: new LinearGradient(
-                  colors: <Color>[
-                    Colors.red,
-                    Colors.blue,
-                  ]
-              ),
+              gradient: new LinearGradient(colors: <Color>[
+                Colors.red,
+                Colors.blue,
+              ]),
               strokeWidth: 2,
               child: Text(
                 "Sample",
@@ -71,12 +69,13 @@ class MyHomePage extends StatelessWidget {
                 Icons.check_sharp,
                 color: Colors.white,
               ),
-              onPressed: ( controller ) async {
+              onPressed: (controller) async {
                 await controller.loading();
-                await new Future.delayed( const Duration( seconds: 3 ) );
-                if ( Random.secure().nextBool() )
+                await new Future.delayed(const Duration(seconds: 3));
+                if (Random.secure().nextBool())
                   await controller.success();
-                else await controller.error();
+                else
+                  await controller.error();
               },
             ),
           ),
