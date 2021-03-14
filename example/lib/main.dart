@@ -48,11 +48,16 @@ class MyHomePage extends StatelessWidget {
             width: 200,
             height: 60,
             child: LoadingButton(
-              borderRadius: BorderRadius.all(Radius.circular(8)),
               gradient: new LinearGradient(colors: <Color>[
                 Colors.red,
                 Colors.blue,
               ]),
+              style: new ButtonStyle(
+                shape: MaterialStateProperty.all(new RoundedRectangleBorder(
+                  borderRadius:
+                      const BorderRadius.all(const Radius.circular(15.0)),
+                )),
+              ),
               strokeWidth: 2,
               child: Text(
                 "Sample",

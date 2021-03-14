@@ -1,11 +1,11 @@
 name: gradient_loading_button
 description: Gradient loading button with success and error result
-version: 0.0.2
+version: 0.1.0-nullsafety.0
 author: LeonColt<lionmanbloodsucker@yahoo.com>
 homepage: https://github.com/LeonColt/gradient_loading_button
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: ">=2.12.0 <3.0.0"
   flutter: ">=1.17.0"
 
 dependencies:

@@ -1,6 +1,7 @@
 library gradient_loading_button;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 
 import 'raised_gradient_button.dart';
 
@@ -21,20 +22,17 @@ class LoadingButtonController {
 }
 
 class LoadingButton extends StatefulWidget {
-  /// The background color of the button.
-  final Color color;
+  ///Style of the button
+  final ButtonStyle? style;
 
   /// The background gradient of the button.
-  final Gradient gradient;
+  final Gradient? gradient;
 
   /// The progress indicator color.
   final Color progressIndicatorColor;
 
   /// The size of the progress indicator.
   final double progressIndicatorSize;
-
-  /// The border radius while NOT animating.
-  final BorderRadius borderRadius;
 
   /// The duration of the animation.
   final Duration animationDuration;
@@ -46,7 +44,7 @@ class LoadingButton extends StatefulWidget {
   ///
   /// This will grant access to its [LoadingButtonController] so
   /// that the animation can be controlled based on the need.
-  final Function(LoadingButtonController) onPressed;
+  final Function(LoadingButtonController)? onPressed;
 
   /// The child to display on the button when idle.
   final Widget child;
@@ -58,26 +56,26 @@ class LoadingButton extends StatefulWidget {
   final Widget errorChild;
 
   LoadingButton({
-    @required this.child,
-    @required this.successChild,
-    @required this.errorChild,
-    @required this.onPressed,
+    final Key? key,
+    required this.child,
+    required this.successChild,
+    required this.errorChild,
+    this.onPressed,
+    this.style,
     this.gradient,
-    this.color = Colors.blue,
     this.strokeWidth = 2,
     this.progressIndicatorColor = Colors.white,
     this.progressIndicatorSize = 30,
-    this.borderRadius = const BorderRadius.all(Radius.circular(0)),
     this.animationDuration = const Duration(milliseconds: 500),
-  });
+  }) : super(key: key);
   @override
   _LoadingButtonState createState() => _LoadingButtonState();
 }
 
 class _LoadingButtonState extends State<LoadingButton>
     with TickerProviderStateMixin {
-  LoadingButtonController _controller;
-  AnimationController _animationController;
+  late LoadingButtonController _controller;
+  late AnimationController _animationController;
   ButtonState _state = ButtonState.idle;
   @override
   void initState() {
@@ -136,36 +134,21 @@ class _LoadingButtonState extends State<LoadingButton>
         curve: Curves.easeInOut,
       ),
     );
-    final borderRadiusAnimation = Tween<BorderRadius>(
-      begin: widget.borderRadius,
-      end: BorderRadius.all(Radius.circular(buttonHeight / 2.0)),
-    ).animate(
-      CurvedAnimation(
-        parent: _animationController,
-        curve: Curves.easeInOut,
-      ),
-    );
     return AnimatedBuilder(
       animation: _animationController,
       builder: (_, child) => new SizedBox(
         height: buttonHeight,
         width: widthAnimation.value,
         child: widget.gradient == null
-            ? RaisedButton(
-                shape: RoundedRectangleBorder(
-                  borderRadius: borderRadiusAnimation.value,
-                ),
-                color: widget.color,
+            ? ElevatedButton(
+                style: widget.style,
                 child: AnimatedSwitcher(
                   duration: const Duration(
                     milliseconds: 250,
                   ),
                   child: _buttonChild(),
                 ),
-                onPressed: () {
-                  if (_animationController.isDismissed &&
-                      _state == ButtonState.idle) widget.onPressed(_controller);
-                },
+                onPressed: _onPressed,
               )
             : RaisedGradientButton(
                 child: AnimatedSwitcher(
@@ -175,18 +158,8 @@ class _LoadingButtonState extends State<LoadingButton>
                   child: _buttonChild(),
                 ),
                 gradient: widget.gradient,
-                borderRadius: BorderRadius.only(
-                  topLeft: borderRadiusAnimation.value.topLeft,
-                  topRight: borderRadiusAnimation.value.topRight,
-                  bottomRight: borderRadiusAnimation.value.bottomRight,
-                  bottomLeft: borderRadiusAnimation.value.bottomLeft,
-                ),
-                height: buttonHeight,
-                width: widthAnimation.value,
-                onPressed: () {
-                  if (_animationController.isDismissed &&
-                      _state == ButtonState.idle) widget.onPressed(_controller);
-                },
+                style: widget.style,
+                onPressed: _onPressed,
               ),
       ),
     );
@@ -212,5 +185,11 @@ class _LoadingButtonState extends State<LoadingButton>
       if (mounted) setState(() => _state = state);
       if (mounted) await _animationController.forward();
     }
+  }
+
+  void _onPressed() {
+    if (widget.onPressed != null &&
+        _animationController.isDismissed &&
+        _state == ButtonState.idle) widget.onPressed!(_controller);
   }
 }
