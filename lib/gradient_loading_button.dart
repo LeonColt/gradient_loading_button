@@ -1,7 +1,6 @@
 library gradient_loading_button;
 
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 
 import 'raised_gradient_button.dart';
 

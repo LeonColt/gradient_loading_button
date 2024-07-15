@@ -53,7 +53,7 @@ class MyHomePage extends StatelessWidget {
                 Colors.blue,
               ]),
               style: new ButtonStyle(
-                shape: MaterialStateProperty.all(new RoundedRectangleBorder(
+                shape: WidgetStatePropertyAll(new RoundedRectangleBorder(
                   borderRadius:
                       const BorderRadius.all(const Radius.circular(15.0)),
                 )),
