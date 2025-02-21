@@ -639,7 +639,7 @@ class _RaisedGradientButtonState extends State<RaisedGradientButton>
             onHighlightChanged: _handleHighlightChanged,
             onHover: _handleHoveredChanged,
             mouseCursor: resolvedMouseCursor,
-            enableFeedback: resolvedEnableFeedback,
+            enableFeedback: resolvedEnableFeedback ?? true,
             focusNode: widget.focusNode,
             canRequestFocus: widget.enabled,
             onFocusChange: _handleFocusedChanged,
