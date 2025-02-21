@@ -1,3 +1,9 @@
+## [0.1.2-nullsafety.0]
+
+- fix enableFeedback no longer nullable
+- Update example AGP to version 8.1.0
+- Update example Kotlin to version 2.1.10
+
 ## [0.1.1-nullsafety.0]
 
 - fix use theme deprecated getter
